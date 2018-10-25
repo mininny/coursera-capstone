@@ -1,6 +1,19 @@
 {% extends 'home.html' %}
 
 {% block body %}
-<h1>Inbox</h1>
-<h1 class="text-center">Welcome {{current_user.username}}</h1>
+{% if current_user.is_authenticated %}
+    <h1 class="text-center">Inbox</h1>
+    <h1 class="text-center">Welcome {{current_user.username}}</h1>
+    <tbody>
+        {% if chatList %}
+        <ul>  
+        {% for chat in chatList %}
+            <li>{{ chat.sender }} on {{ chat.time }}: {{ chat.chat }}</li>    
+        {% endfor %}
+        </ul>
+        {% endif %}
+    </tbody>
+    <a href="/outbox" class="btn btn-success btn-lg">Send chat</a>
+    <a href="/logout" class="btn btn-success btn-lg">Log Out</a>
+{% endif %}
 {% endblock %}
