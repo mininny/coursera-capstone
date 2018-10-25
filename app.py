@@ -1,5 +1,5 @@
 from flask import (
-    flash, g, redirect, render_template, request, session, url_for, Flask
+    flash, redirect, render_template, request, session, url_for, Flask, send_file
 )
 from flask_sqlalchemy import SQLAlchemy
 from flask_login import LoginManager, login_user, login_required, logout_user, current_user
@@ -180,13 +180,13 @@ def register():
 def dbdump():
     if request.method == "GET":
         conn = sqlite3.connect(PATH)
-        dump_data = '\n'.join(conn.iterdump())
+        dumpData = '\n'.join(conn.iterdump())
         conn.close()
-        dumpfile = str(uuid.uuid4())+".dump.zip"
-        zfile = zipfile.ZipFile(dumpfile, mode="w", compression=zipfile.ZIP_DEFLATED)
-        zfile.writestr("dump.sql", dump_data)
-        zfile.close()
-        return send_file(dumpfile, as_attachment=True)
+        dumpFile = str(uuid.uuid4())+".dump.zip"
+        zipFile = zipfile.ZipFile(dumpFile, mode="w", compression=zipfile.ZIP_DEFLATED)
+        zipFile.writestr("dump.sql", dumpData)
+        zipFile.close()
+        return send_file(dumpFile, as_attachment=True)
     else:
         error = "Method not allowed"
         return render_template("index.html", error = error)
