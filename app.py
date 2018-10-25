@@ -50,7 +50,7 @@ class Chat(db.Model):
         self.chat = chat
         self.receiver = receiver
 
-db.create_all()
+# db.create_all()
 
 encrypt = Fernet(Fernet.generate_key())
 # db.Query.addcolumn()
