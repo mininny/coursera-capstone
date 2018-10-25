@@ -60,54 +60,35 @@ loginManager.init_app(app)
 
 @app.route('/')
 def index():
-    return render_template('/login.html')
+    return render_template('/index.html')
 
 
 @app.route('/login')
 def login():
     form = UserForm(request.form)
     if request.method == 'POST':
-
+        
         username = form.username.data
         password = form.password.data
         # db = get_db()
         error = None
         usernameSalt = str(uuid.uuid4())
         encryptedUsernameSalt = encrypt.encrypt(usernameSalt)
-
         passwordHash = Bcrypt.generate_password_hash(usernameSalt+"#"+form.password)
-        # cur = sql.cursor()
-        # cur = 
-        # cur.execute("INSERT INTO users(username, password, usernameSalt, encryptedUsernameSalt, passwordHash) VALUES(%s, %s, %s, %s, %s)", (username, password, usernameSalt, encryptedUsernameSalt, passwordHash))
-
-        # sql.commit()
-        # cur.close()
         flash("LMAO")
-
+        user = User.query.filter_by(username=form.username.data).first()
+        login_user(user)
+        return redirect(url_for("inbox"))
         return render_template("/register.html")
-        # if not username:
-        #     error = 'Username is required.'
-        # elif not password:
-        #     error = 'Password is required.'
-        # elif db.execute(
-        #     'SELECT id FROM user WHERE username = ?', (username,)
-        # ).fetchone() is not None:
-        #     error = 'User {} is already registered.'.format(username)
-
-        # if error is None:
-        #     db.execute(
-        #         'INSERT INTO user (username, password) VALUES (?, ?)',
-        #         (username, generate_password_hash(password))
-        #     )
-        #     db.commit()
-        #     return redirect(url_for('auth.login'))
 
 
     return render_template('/login.html', form=form)
 
 @app.route('/inbox')
 def inbox():
-    return render_template('/inbox.html')
+    form = chatForm()
+
+    return render_template('/inbox.html', form=form)
 
 @app.route('/register', methods=('GET', 'POST'))
 def register():
@@ -121,7 +102,10 @@ def register():
         encryptedUsernameSalt = encrypt.encrypt(usernameSalt)
 
         passwordHash = Bcrypt.generate_password_hash(usernameSalt+"#"+form.password)
-        # cur = sql.cursor()
+        newUser = User(username, password)
+        db.session.add(newUser)
+        db.session.commit()
+        # cur = sql.cursor()                          
         # cur = 
         # cur.execute("INSERT INTO users(username, password, usernameSalt, encryptedUsernameSalt, passwordHash) VALUES(%s, %s, %s, %s, %s)", (username, password, usernameSalt, encryptedUsernameSalt, passwordHash))
 
@@ -129,7 +113,7 @@ def register():
         # cur.close()
         flash("LMAO")
 
-        return render_template("/register.html")
+        return redirect(url_for("login"))
         # if not username:
         #     error = 'Username is required.'
         # elif not password:

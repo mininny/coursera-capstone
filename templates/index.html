@@ -1,5 +1,23 @@
 {% extends 'home.html' %}
 
 {% block body %}
-HOME
+<div class="col-sm-12">
+    <h1 class="text-center">Welcome !</h1>
+</div>
+
+  <!-- grid 2 -->
+  <div class="col-sm-12">
+    <div class="text-center">
+      <div class="well">Use the top Navigation bar to <b>Register</b>, <b>Login</b> or check out <b>DBdump</b> where database dump is available.
+      <br /> Clicking on <b>Home</b> will always bring you right to this page !
+      </div>
+  </div>
+  </div>
+  </div>
+
+  <!-- grid 3 -->
+  <div id="flashmsg" class="col-sm-12">
+    <a href="/register" class="btn btn-primary btn-lg">Register</a>
+    <a href="/login" class="btn btn-success btn-lg">Login</a>
+  </div>
 {% endblock %}
