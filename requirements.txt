@@ -18,5 +18,5 @@ path.py==11.0.1
 pathlib2==2.3.2
 SQLAlchemy==1.2.7
 tables==3.4.3
-urllib3==1.22
+urllib3==1.24.2
 WTForms==2.2.1
